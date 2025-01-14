@@ -25,7 +25,7 @@ public interface ReservasRepository extends JpaRepository<ReservaFijas, Reservas
 			@Param("diasDeLaSemana") Long diasDeLaSemana, @Param("tramosHorarios") Long tramosHorarios);
 
 //	Consulta que recupera la información sobre las reservas que están asociadas a un recurso específico..
-	@Query("SELECT new ies.jandula.reserva_carritos.dto.ReservaDto("
+	@Query("SELECT new es.iesjandula.reserva_carritos.dto.ReservaDto("
 			+ "r.reservaId.diasDeLaSemana.diasDeLaSemana, r.reservaId.tramosHorarios.tramosHorarios, r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos)) "
 			+ "FROM ReservaFijas r Join r.reservaId.profesor p " + "WHERE r.reservaId.aulaYCarritos = :recurso")
 	List<ReservaDto> encontrarReservaPorRecurso(@Param("recurso") RecursosPrevios recurso);

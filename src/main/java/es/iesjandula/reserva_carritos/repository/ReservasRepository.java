@@ -29,5 +29,20 @@ public interface ReservasRepository extends JpaRepository<ReservaFijas, Reservas
 			+ "r.reservaId.diasDeLaSemana.diasDeLaSemana, r.reservaId.tramosHorarios.tramosHorarios, r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos)) "
 			+ "FROM ReservaFijas r Join r.reservaId.profesor p " + "WHERE r.reservaId.aulaYCarritos = :recurso")
 	List<ReservaDto> encontrarReservaPorRecurso(@Param("recurso") RecursosPrevios recurso);
+	
+	@Query("(SELECT  new es.iesjandula.reserva_carritos.dto.ReservaDto("
+			+"d.diasDeLaSemana, t.tramosHorarios ,null, null, null) "
+			+"FROM DiasSemana d, TramosHorarios t) "
+			+"UNION " 
+			+"SELECT  new es.iesjandula.reserva_carritos.dto.ReservaDto("
+			+"r.reservaId.diasDeLaSemana.diasDeLaSemana, r.reservaId.tramosHorarios.tramosHorarios, r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos)) "
+			+ "FROM ReservaFijas r Join r.reservaId.profesor p ")
+	List<ReservaDto>entrarTodasLasReservas();
+	
+	@Query("SELECT  new es.iesjandula.reserva_carritos.dto.ReservaDto("
+			+ "r.reservaId.diasDeLaSemana.diasDeLaSemana, r.reservaId.tramosHorarios.tramosHorarios, r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos)) "
+			+ "FROM ReservaFijas r Join r.reservaId.profesor p ")
+	List<ReservaDto> obtenerReservasFijas();
+
 
 }

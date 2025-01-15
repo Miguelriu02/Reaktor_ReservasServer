@@ -438,5 +438,44 @@ public class ReservaCarritosRest
 		}
 
 	}
+	
+	/*
+	 * Endpoint de tipo get para mostar una lista con los recursos
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/kk")
+	public ResponseEntity<?> obtenerReservasDto()
+	{
+		try
+		{
+//			Creacion de una lista para almacenar los recursos
+			List<ReservaDto> listaReservas;
+
+//			Comprueba si la base de datos tiene registros de los recurso
+			if (this.recursosRepository.findAll().isEmpty())
+			{
+				String mensajeError = "No se ha encontrado ningun recurso";
+				log.error(mensajeError);
+				throw new ReservaException(1, mensajeError);
+			}
+
+//			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
+			listaReservas = this.reservasRepository.entrarTodasLasReservas();
+
+			return ResponseEntity.ok(listaReservas);
+		} catch (ReservaException reservaException)
+		{
+//			Captura la excepcion personalizada, devolvera un 404
+			return ResponseEntity.status(404).body(reservaException.getBodyMesagge());
+		} catch (Exception exception)
+		{
+//			Captura los errores relacionados con la base de datos, devolverá un 500
+			ReservaException reservaException = new ReservaException(
+					100, "Error al acceder a la bade de datos", exception
+			);
+			log.error("Error al acceder a la bade de datos: ", exception);
+			return ResponseEntity.status(500).body(reservaException.getBodyMesagge());
+		}
+	}
+	
 
 }

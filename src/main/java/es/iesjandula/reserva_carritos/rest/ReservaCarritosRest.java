@@ -1,5 +1,6 @@
 package es.iesjandula.reserva_carritos.rest;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -448,7 +449,7 @@ public class ReservaCarritosRest
 		try
 		{
 //			Creacion de una lista para almacenar los recursos
-			List<ReservaDto> listaReservas;
+			List<ReservaDto> listaReservasOrdenadas;
 
 //			Comprueba si la base de datos tiene registros de los recurso
 			if (this.recursosRepository.findAll().isEmpty())
@@ -457,11 +458,10 @@ public class ReservaCarritosRest
 				log.error(mensajeError);
 				throw new ReservaException(1, mensajeError);
 			}
-
 //			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
-			listaReservas = this.reservasRepository.entrarTodasLasReservas();
+			listaReservasOrdenadas = this.reservasRepository.obtenerCombinacionesDiasYTramos();
 
-			return ResponseEntity.ok(listaReservas);
+			return ResponseEntity.ok(listaReservasOrdenadas);
 		} catch (ReservaException reservaException)
 		{
 //			Captura la excepcion personalizada, devolvera un 404

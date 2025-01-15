@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReservaDto
 {
 	private String diaSemana;
@@ -16,30 +18,11 @@ public class ReservaDto
 	private String email;
 
 	private String nombreYapellidos;
-	
-	private String valornulo1;
-	private String valornulo2;
-	private String valornulo3;
-
-
-	public ReservaDto(String diaSemana, String tramoHorario, int nAlumnos, String email, String nombreYapellidos) {
-		super();
-		this.diaSemana = diaSemana;
-		this.tramoHorario = tramoHorario;
-		this.nAlumnos = nAlumnos;
-		this.email = email;
-		this.nombreYapellidos = nombreYapellidos;
-	}
-
 
 	public ReservaDto(String diaSemana, String tramoHorario) {
 		super();
 		this.diaSemana = diaSemana;
 		this.tramoHorario = tramoHorario;
 
-	}
-
- 
-	
-	
+	}	
 }

@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -169,23 +168,36 @@ public class ReservaCarritosRest
 	 * @throws ReservaException
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/bookings")
-	public ResponseEntity<?> obtenerReservaPorRecurso(@RequestBody(required = true) RecursosPrevios recursos)
+	public ResponseEntity<?> obtenerReservasDto(@RequestHeader(value = "aulaYCarritos")String recursoA)
 	{
 		try
 		{
-//			Verifica si existe una reserva asociada a ese recurso en base de datos
-			if (this.reservasRepository.encontrarReservaPorRecurso(recursos).isEmpty())
+//			Creacion de una lista para almacenar los recursos
+			List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
+			List<Object[]> resultados = reservasRepository.encontrarReservaPorRecurso(recursoA);
+
+//			Comprueba si la base de datos tiene registros de los recurso
+			if (this.recursosRepository.findAll().isEmpty())
 			{
-
-				String mensajeError = "No se ha encontrado ninguna reseva con ese recurso";
+				String mensajeError = "No se ha encontrado ningun recurso";
 				log.error(mensajeError);
-				throw new ReservaException(4, mensajeError);
+				throw new ReservaException(1, mensajeError);
 			}
+			
+			for (Object[] row : resultados) {
+	            Long  diaSemana = (Long)row[0];
+	            Long tramoHorario = (Long) row[1];
+	            Integer nAlumnos = (row[2] != null) ? (Integer) row[2] : 0;
+	            String email = (String) row[3];
+	            String nombreYapellidos = (String) row[4];
+	            String recurso = (String) row[5];
 
-//			Si existe, la añadimos a una lista para mostrarla más adelante
-			List<ReservaDto> listaRecursos = this.reservasRepository.encontrarReservaPorRecurso(recursos);
+	            // Mapeo a ReservaDto
+	            listaReservas.add(new ReservaDto(diaSemana.toString(), tramoHorario.toString(), nAlumnos, email, nombreYapellidos, recurso));
+	        }
+//			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
 
-			return ResponseEntity.ok(listaRecursos);
+			return ResponseEntity.ok(listaReservas);
 		} catch (ReservaException reservaException)
 		{
 //			Captura la excepcion personalizada, devolvera un 404
@@ -199,7 +211,6 @@ public class ReservaCarritosRest
 			log.error("Error al acceder a la bade de datos: ", exception);
 			return ResponseEntity.status(500).body(reservaException.getBodyMesagge());
 		}
-
 	}
 
 	/**
@@ -439,55 +450,5 @@ public class ReservaCarritosRest
 		}
 
 	}
-	
-	/*
-	 * Endpoint de tipo get para mostar una lista con los recursos
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/kk")
-	public ResponseEntity<?> obtenerReservasDto()
-	{
-		try
-		{
-//			Creacion de una lista para almacenar los recursos
-			List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
-			List<Object[]> resultados = reservasRepository.obtenerReservas();
-
-//			Comprueba si la base de datos tiene registros de los recurso
-			if (this.recursosRepository.findAll().isEmpty())
-			{
-				String mensajeError = "No se ha encontrado ningun recurso";
-				log.error(mensajeError);
-				throw new ReservaException(1, mensajeError);
-			}
-			
-			for (Object[] row : resultados) {
-	            Long  diaSemana = (Long)row[0];
-	            Long tramoHorario = (Long) row[1];
-	            Integer nAlumnos = (row[2] != null) ? (Integer) row[2] : 0;
-	            String email = (String) row[3];
-	            String nombreYapellidos = (String) row[4];
-	            String recurso = (String) row[5];
-
-	            // Mapeo a ReservaDto
-	            listaReservas.add(new ReservaDto(diaSemana.toString(), tramoHorario.toString(), nAlumnos, email, nombreYapellidos, recurso));
-	        }
-//			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
-
-			return ResponseEntity.ok(listaReservas);
-		} catch (ReservaException reservaException)
-		{
-//			Captura la excepcion personalizada, devolvera un 404
-			return ResponseEntity.status(404).body(reservaException.getBodyMesagge());
-		} catch (Exception exception)
-		{
-//			Captura los errores relacionados con la base de datos, devolverá un 500
-			ReservaException reservaException = new ReservaException(
-					100, "Error al acceder a la bade de datos", exception
-			);
-			log.error("Error al acceder a la bade de datos: ", exception);
-			return ResponseEntity.status(500).body(reservaException.getBodyMesagge());
-		}
-	}
-	
 
 }

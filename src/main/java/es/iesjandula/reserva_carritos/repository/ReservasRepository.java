@@ -15,11 +15,11 @@ public interface ReservasRepository extends JpaRepository<ReservaFijas, Reservas
 
 //	Consulta que recupera la información sobre las reservas que están asociadas a 
 //	un email, una aulaYCarritos, un diasDeLaSemana y un tramosHorarios
-	@Query("SELECT r FROM ReservaFijas r WHERE r.reservaId.profesor.email = :email AND "
+	@Query("SELECT r FROM ReservaFijas r WHERE "
 			+ "r.reservaId.aulaYCarritos.aulaYCarritos = :aulaYCarritos AND "
 			+ "r.reservaId.diasDeLaSemana.id = :diasDeLaSemana AND "
 			+ "r.reservaId.tramosHorarios.id = :tramosHorarios")
-	Optional<ReservaFijas> encontrarReserva(@Param("email") String email, @Param("aulaYCarritos") String aulaYCarritos,
+	Optional<ReservaFijas> encontrarReserva( @Param("aulaYCarritos") String aulaYCarritos,
 			@Param("diasDeLaSemana") Long diasDeLaSemana, @Param("tramosHorarios") Long tramosHorarios);
 
 //	Consulta que recupera la información sobre las reservas que están asociadas a un recurso específico..

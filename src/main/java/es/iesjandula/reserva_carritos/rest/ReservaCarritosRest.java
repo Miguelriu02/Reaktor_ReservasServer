@@ -238,12 +238,14 @@ public class ReservaCarritosRest
 			this.recursosRepository.saveAndFlush(nuevoRecurso);
 
 			return ResponseEntity.ok().build();
-		} catch (ReservaException reservaException)
+		} 
+		catch (ReservaException reservaException)
 		{
 //			Captura la excepcion personalizada y retorna un 409 ya que existe un conflicto,
 //			que existe un recurso con los mismos datos
 			return ResponseEntity.status(409).body(reservaException.getBodyMesagge());
-		} catch (Exception exception)
+		} 
+		catch (Exception exception)
 		{
 //			Para cualquier error inesperado, devolverá un 500
 			ReservaException reservaException = new ReservaException(
@@ -315,7 +317,7 @@ public class ReservaCarritosRest
 
 			// Verifica si ya existe una reserva con los mismos datos
 			Optional<ReservaFijas> optinalReserva = this.reservasRepository
-					.encontrarReserva(email, aulaYCarritos, diaDeLaSemana, tramosHorarios);
+					.encontrarReserva( aulaYCarritos, diaDeLaSemana, tramosHorarios);
 
 			if (optinalReserva.isPresent())
 			{
@@ -397,7 +399,7 @@ public class ReservaCarritosRest
 			// Antes de borrar la reserva verifica si existe una reserva con los mismos
 			// datos
 			Optional<ReservaFijas> optinalReserva = this.reservasRepository
-					.encontrarReserva(email, aulaYCarritos, diaDeLaSemana, tramoHorario);
+					.encontrarReserva( aulaYCarritos, diaDeLaSemana, tramoHorario);
 
 			if (!optinalReserva.isPresent())
 			{

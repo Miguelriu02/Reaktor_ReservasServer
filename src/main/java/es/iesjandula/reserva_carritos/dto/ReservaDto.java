@@ -18,6 +18,8 @@ public class ReservaDto
 	private String email;
 
 	private String nombreYapellidos;
+	
+	private String recurso;
 
 	public ReservaDto(String diaSemana, String tramoHorario) {
 		super();

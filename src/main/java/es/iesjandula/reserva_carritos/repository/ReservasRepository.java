@@ -26,36 +26,23 @@ public interface ReservasRepository extends JpaRepository<ReservaFijas, Reservas
 
 //	Consulta que recupera la información sobre las reservas que están asociadas a un recurso específico..
 	@Query("SELECT new es.iesjandula.reserva_carritos.dto.ReservaDto("
-			+ "r.reservaId.diasDeLaSemana.diasDeLaSemana, r.reservaId.tramosHorarios.tramosHorarios, r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos)) "
+			+ "r.reservaId.diasDeLaSemana.diasDeLaSemana, r.reservaId.tramosHorarios.tramosHorarios, r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos), r.reservaId.aulaYCarritos.aulaYCarritos) "
 			+ "FROM ReservaFijas r Join r.reservaId.profesor p " + "WHERE r.reservaId.aulaYCarritos = :recurso")
 	List<ReservaDto> encontrarReservaPorRecurso(@Param("recurso") RecursosPrevios recurso);
 
-	@Query("SELECT new es.iesjandula.reserva_carritos.dto.ReservaDto("
-            + "d.diasDeLaSemana, t.tramosHorarios) "
-            + "FROM DiasSemana d, TramosHorarios t "
-            + "ORDER BY CASE t.tramosHorarios "
-            + "WHEN '8:00/9:00' THEN 1 "
-            + "WHEN '9:00/10:00' THEN 2 "
-            + "WHEN '10:00/11:00' THEN 3 "
-            + "WHEN '11:30/12:30' THEN 4 "
-            + "WHEN '12:30/13:30' THEN 5 "
-            + "WHEN '13:30/14:30' THEN 6 "
-            + "END, "
-            + "CASE d.diasDeLaSemana "
-            + "WHEN 'Lunes' THEN 1 "
-            + "WHEN 'Martes' THEN 2 "
-            + "WHEN 'Miércoles' THEN 3 "
-            + "WHEN 'Jueves' THEN 4 "
-            + "WHEN 'Viernes' THEN 5 "
-            + "END")
-List<ReservaDto> obtenerCombinacionesDiasYTramos();
+	@Query(value = 
+		    "SELECT d.id, t.id, NULL, NULL, NULL, NULL "
+		    + "FROM dias_semana d, tramos_horarios t, reserva_fijas r, profesores p "
+		    + "WHERE ((d.id, t.id) NOT IN (SELECT r.dias_de_la_semana_id, r.tramos_horarios_id FROM reserva_fijas r)) "
+		    + "UNION "
+		    + "SELECT r2.dias_de_la_semana_id, r2.tramos_horarios_id, r2.n_alumnos, r2.profesor_email, "
+		    + "CONCAT(p.nombre, ' ', p.apellidos), r2.recursos_aula_y_carritos "
+		    + "FROM reserva_fijas r2, profesores p "
+		    + "WHERE r2.profesor_email = p.email "
+		    + "ORDER BY 1, 2", 
+		    nativeQuery = true)
+		List<Object[]> obtenerReservas();
 
 
-
-	@Query("SELECT new es.iesjandula.reserva_carritos.dto.ReservaDto(" + "r.reservaId.diasDeLaSemana.diasDeLaSemana, "
-			+ "r.reservaId.tramosHorarios.tramosHorarios, "
-			+ "r.nAlumnos, p.email, CONCAT(p.nombre, ' ', p.apellidos)) "
-			+ "FROM ReservaFijas r JOIN r.reservaId.profesor p")
-	List<ReservaDto> obtenerReservasFijas();
 
 }

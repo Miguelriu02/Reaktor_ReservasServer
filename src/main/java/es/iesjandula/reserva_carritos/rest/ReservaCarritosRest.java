@@ -1,6 +1,6 @@
 package es.iesjandula.reserva_carritos.rest;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -449,7 +449,8 @@ public class ReservaCarritosRest
 		try
 		{
 //			Creacion de una lista para almacenar los recursos
-			List<ReservaDto> listaReservasOrdenadas;
+			List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
+			List<Object[]> resultados = reservasRepository.obtenerReservas();
 
 //			Comprueba si la base de datos tiene registros de los recurso
 			if (this.recursosRepository.findAll().isEmpty())
@@ -458,10 +459,21 @@ public class ReservaCarritosRest
 				log.error(mensajeError);
 				throw new ReservaException(1, mensajeError);
 			}
-//			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
-			listaReservasOrdenadas = this.reservasRepository.obtenerCombinacionesDiasYTramos();
+			
+			for (Object[] row : resultados) {
+	            Long  diaSemana = (Long)row[0];
+	            Long tramoHorario = (Long) row[1];
+	            Integer nAlumnos = (row[2] != null) ? (Integer) row[2] : 0;
+	            String email = (String) row[3];
+	            String nombreYapellidos = (String) row[4];
+	            String recurso = (String) row[5];
 
-			return ResponseEntity.ok(listaReservasOrdenadas);
+	            // Mapeo a ReservaDto
+	            listaReservas.add(new ReservaDto(diaSemana.toString(), tramoHorario.toString(), nAlumnos, email, nombreYapellidos, recurso));
+	        }
+//			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
+
+			return ResponseEntity.ok(listaReservas);
 		} catch (ReservaException reservaException)
 		{
 //			Captura la excepcion personalizada, devolvera un 404

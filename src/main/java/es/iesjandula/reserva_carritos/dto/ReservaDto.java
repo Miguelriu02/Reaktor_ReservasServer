@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReservaDto
 {
-	private String diaSemana;
+	private Long diaSemana;
 
-	private String tramoHorario;
+	private Long tramoHorario;
 
 	private int nAlumnos;
 
@@ -21,7 +21,7 @@ public class ReservaDto
 	
 	private String recurso;
 
-	public ReservaDto(String diaSemana, String tramoHorario) {
+	public ReservaDto(Long diaSemana, Long tramoHorario) {
 		super();
 		this.diaSemana = diaSemana;
 		this.tramoHorario = tramoHorario;

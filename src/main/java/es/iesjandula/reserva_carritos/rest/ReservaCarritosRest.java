@@ -193,7 +193,7 @@ public class ReservaCarritosRest
 	            String recurso = (String) row[5];
 
 	            // Mapeo a ReservaDto
-	            listaReservas.add(new ReservaDto(diaSemana.toString(), tramoHorario.toString(), nAlumnos, email, nombreYapellidos, recurso));
+	            listaReservas.add(new ReservaDto(diaSemana, tramoHorario, nAlumnos, email, nombreYapellidos, recurso));
 	        }
 //			Encontramos todos los recursos y los introducimos en una lista para mostrarlos más adelante
 

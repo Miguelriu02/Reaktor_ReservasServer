@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "4d69eee2-ea90-4337-9231-1a7c4a5caa1c",
+		"name": "RESERVA CARRITOS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30209860"
+	},
+	"item": [
+		{
+			"name": "OBTENER RECURSO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/resources",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"resources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OBTENER TRAMOS HORARIOS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/timeslots",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"timeslots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OBTENER DIAS DE LA SEMANA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/days_week",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"days_week"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OBTENER RESERVAS A PARTIR DE UN RECURSO",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "aulaYCarritos",
+						"value": "Biblioteca",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AÑADIR RECURSOS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "recursos",
+						"value": "Aula 1.10",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/resources",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"resources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RESERVAR RECURSO",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "email",
+						"value": "danielrodriguez@example.com",
+						"type": "text"
+					},
+					{
+						"key": "recurso",
+						"value": "Biblioteca",
+						"type": "text"
+					},
+					{
+						"key": "diaDeLaSemana",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "tramosHorarios",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "nAlumnos",
+						"value": "10",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CANCELAR RECURSO",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "email",
+						"value": "carlosevans@example.com",
+						"type": "text"
+					},
+					{
+						"key": "recurso",
+						"value": "Biblioteca",
+						"type": "text"
+					},
+					{
+						"key": "diaDeLaSemana",
+						"value": "5",
+						"type": "text"
+					},
+					{
+						"key": "tramoHorario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete recurso",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "recursos",
+						"value": "Aula 1.10",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8085/bookings/previous_resources/resources",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"bookings",
+						"previous_resources",
+						"resources"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -185,8 +185,8 @@ public class ReservaCarritosRest
 			}
 			
 			for (Object[] row : resultados) {
-	            Long  diaSemana = (Long)row[0];
-	            Long tramoHorario = (Long) row[1];
+				Long  diaSemana = (Long)row[0];
+				Long tramoHorario = (Long) row[1];
 	            Integer nAlumnos = (row[2] != null) ? (Integer) row[2] : 0;
 	            String email = (String) row[3];
 	            String nombreYapellidos = (String) row[4];
@@ -306,7 +306,6 @@ public class ReservaCarritosRest
 
 	@RequestMapping(method = RequestMethod.POST, value = "/bookings")
 	public ResponseEntity<?> realizarReserva(@RequestHeader(value = "email", required = true) String email,
-			@RequestHeader(value = "profesor", required = true) String nombreProfesor,
 			@RequestHeader(value = "recurso", required = true) String aulaYCarritos,
 			@RequestHeader(value = "diaDeLaSemana", required = true) Long diaDeLaSemana,
 			@RequestHeader(value = "tramosHorarios", required = true) Long tramosHorarios,
